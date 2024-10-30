@@ -1,0 +1,19 @@
+@font-face {
+  font-family: minecraftfont;
+  src: url("/public/assets/fonts/minecraftfont.eot");
+  src: local("minecraftfont"),
+    url("/public/assets/fonts/minecraftfont.woff") format("woff"),
+    url("/public/assets/fonts/minecraftfont.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  font-family: minecraftfont;
+  color: white;
+}
+
+button {
+  margin: 0;
+  font-family: minecraftfont;
+  color: white;
+}
