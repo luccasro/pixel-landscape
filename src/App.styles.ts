@@ -16,6 +16,9 @@ export const subtitleKeyframes = keyframes`
   }
 `;
 
+const placeholderBackground =
+  "linear-gradient(135deg, rgba(10, 10, 60, 0.9), rgba(20, 20, 80, 0.8), rgba(50, 0, 100, 0.7), rgba(200, 50, 255, 0.4))";
+
 export const Button = styled.button.withConfig({
   shouldForwardProp: (prop) => prop !== "active",
 })<{ active?: boolean }>`
@@ -44,7 +47,9 @@ export const Container = styled.div.withConfig({
   right: 0;
   overflow: auto;
   background: ${({ styleConfig: { background, backgroundSize } }) =>
-    background ? `${background} 0% 0% /${backgroundSize}` : "white"};
+    background
+      ? `url("${background}") no-repeat 0% 0% /${backgroundSize}`
+      : placeholderBackground};
   width: ${({ styleConfig: { width } }) => width || "100%"};
   height: ${({ styleConfig: { height } }) => height || "100%"};
 `;

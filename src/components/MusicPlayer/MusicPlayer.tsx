@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ReactPlayer from "react-player";
 import {
   MusicWrapper,
@@ -57,34 +57,24 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   }, [videoIndex]);
 
   useEffect(() => {
-    if (showMusicPlayer && !isPlaying) {
+    if (showMusicPlayer) {
       setIsPlaying(true);
     }
-  }, [showMusicPlayer, isPlaying]);
+  }, [showMusicPlayer]);
 
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
+  const handlePlayPause = useCallback(() => {
+    setIsPlaying((prevIsPlaying) => !prevIsPlaying);
+  }, []);
 
-  const handleNextVideo = () => {
-    const nextIndex = videoIndex + 1;
+  const handleNextVideo = useCallback(() => {
+    setVideoIndex((prevIndex) => (prevIndex + 1) % musicVideos.length);
+  }, []);
 
-    if (nextIndex < musicVideos.length) {
-      setVideoIndex(nextIndex);
-    } else {
-      setVideoIndex(0);
-    }
-  };
-
-  const handlePreviousVideo = () => {
-    const previousIndex = videoIndex - 1;
-
-    if (previousIndex >= 0) {
-      setVideoIndex(previousIndex);
-    } else {
-      setVideoIndex(musicVideos.length - 1);
-    }
-  };
+  const handlePreviousVideo = useCallback(() => {
+    setVideoIndex((prevIndex) =>
+      prevIndex === 0 ? musicVideos.length - 1 : prevIndex - 1
+    );
+  }, []);
 
   return (
     <>

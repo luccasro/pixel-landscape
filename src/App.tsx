@@ -44,11 +44,28 @@ function App() {
 
   const generateBackgroundUrl = useCallback(() => {
     const randomBackground = getRandomBackground();
-    setBackground({
-      artist: randomBackground.artist,
-      url: `/assets/backgrounds/${randomBackground.artist}/${randomBackground.background}`,
-    });
-  }, []);
+    const newImageUrl = `/assets/backgrounds/${randomBackground.artist}/${randomBackground.background}`;
+
+    if (!background.url) {
+      setBackground({
+        artist: randomBackground.artist,
+        url: newImageUrl,
+      });
+      return;
+    }
+
+    // Preload the image
+    const img = new Image();
+    img.src = newImageUrl;
+
+    img.onload = () => {
+      // Only update the state once the image is fully loaded to avoid flickering
+      setBackground({
+        artist: randomBackground.artist,
+        url: newImageUrl,
+      });
+    };
+  }, [background.url]);
 
   const loadSettings = useCallback(() => {
     const settingsParsed = getSettings();
@@ -106,7 +123,7 @@ function App() {
     color: "white",
     height: `${size.height}px`,
     width: `${size.width}px`,
-    background: `url("${background.url}") no-repeat`,
+    background: background.url,
     backgroundSize: settings.stretch ? "100% 100%" : "cover",
     imageRendering: settings.smooth ? "auto" : "crisp-edges",
   };
